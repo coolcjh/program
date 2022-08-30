@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id='content'>
+        <table id='books' cellpadding='10px' style="text-align:left;">
+            <thead>
+                <tr>
+                    <th>author</th>
+                    <th>title</th>
+                    <th>genre</th>
+                    <th>price</th>
+                    <th>publish_date</th>
+                    <th>description</th>                    
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+    </div>
+    
+    <script>
+        let xmlContent = '';
+        let tableBooks = document.getElementById('books');
+
+
+        fetch('books.xml').then((response) => {
+            response.text().then((xml)=>{
+                xmlContent = xml;
+                //console.log(xmlContent);
+
+                let parser = new DOMParser();
+                let xmlDom = parser.parseFromString(xmlContent, 'application/xml');
+                let books = xmlDom.querySelectorAll('book');
+                //console.log(books);
+
+                books.forEach(bookXmlNode => {
+
+                   // console.log(bookXmlNode);
+                   // console.log(bookXmlNode.children[0].innerHTML);
+
+                    let row = document.createElement('tr');
+
+                    // author
+                    let td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[0].innerHTML;
+                    row.appendChild(td);
+
+                    // title
+                    td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[1].innerHTML;
+                    row.appendChild(td);
+
+                    // genre
+                    td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[2].innerHTML;
+                    row.appendChild(td);
+
+                    // price
+                    td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[3].innerHTML;
+                    row.appendChild(td);
+
+                    // publish_date
+                    td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[4].innerHTML;
+                    row.appendChild(td);
+
+                    // description
+                    td = document.createElement('td');
+                    td.innerText = bookXmlNode.children[5].innerHTML;
+                    row.appendChild(td);
+
+                    tableBooks.children[1].appendChild(row);
+                })
+            });
+        }); 
+    </script>
+</body>
+</html>
